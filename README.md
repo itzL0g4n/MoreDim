@@ -11,6 +11,7 @@ MoreDim is a lightweight Windows desktop utility that dims your displays beyond 
 - Continue using apps normally; mouse and keyboard input passes through the overlay.
 - Choose whether closing the settings window minimizes MoreDim to the notification area or exits and removes the dimming overlay.
 - Optionally start MoreDim when you sign in to Windows.
+- Request that Windows exclude the dimming overlay from supported screenshots and recordings.
 - Reopen the controls by double-clicking the tray icon. Right-click the icon to toggle dimming or quit.
 
 ## Requirements
@@ -48,11 +49,9 @@ The executable is written to:
 bin/Release/net8.0-windows/win-x64/publish/
 ```
 
-Upload `MoreDim.exe` from that directory as an asset on the GitHub Release for each version. For an ARM64 Windows device, replace `win-x64` with `win-arm64`.
-
 ## How it works and limitations
 
-MoreDim creates a click-through black overlay window on each display. This is a software dimming effect; it may appear in screenshots and screen recordings, and it does not lower the panel's physical backlight power. The dimming level resets to 35% when the app restarts; the startup and minimize-to-tray preferences are saved per user.
+MoreDim creates a click-through black overlay window on each display. It requests capture exclusion through [SetWindowDisplayAffinity](https://learn.microsoft.com/en-us/windows/win32/api/winuser/nf-winuser-setwindowdisplayaffinity), supported for `WDA_EXCLUDEFROMCAPTURE` starting with Windows 10 version 2004. Windows and capture applications may not honor the request in every capture path, so exclusion is not guaranteed. Dimming is a visual overlay and does not lower the panel's physical backlight power. The dimming level resets to 35% when the app restarts. The minimize-to-tray preference is saved beside the executable, and the startup preference is registered for the current Windows user.
 
 ## License
 
